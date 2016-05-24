@@ -6,13 +6,13 @@ var Handlebars = require('handlebars');
 // 数据
 var model = {
     list: [
-    /*{
+    {
         name: 'todo 1'
     }, {
         name: 'todo 2'
     }, {
         name: 'todo 3'
-    }*/
+    }
     ]
 };
 

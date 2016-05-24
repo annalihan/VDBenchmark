@@ -6,13 +6,13 @@ var createElement = require('virtual-dom/create-element');
 
 var model = {
     list: [
-        /*{
+        {
             name: 'list 1'
         }, {
             name: 'list 2'
         }, {
             name: 'list 3'
-        }*/
+        }
     ]
 };
 
