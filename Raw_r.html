@@ -1,0 +1,40 @@
+<!doctype html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <link href="bootstrap.min.css" rel="stylesheet" />
+        <style>
+            .dbl-top-margin {
+                margin-top: 20px;
+            }
+            .float-right {
+                float: right;
+            }
+        </style>
+        <script class="template" type="text/template">
+            <div class="dbl-top-margin">
+                <button class="dbl-top-margin btn btn-primary col-xs-12 item-run">Run Test</button>
+                <p>
+                    <span>test result(unit ms): </span>
+                    <span class="item-result"></span>
+                </p>
+            </div>
+            <ul class="list-group dbl-top-margin">
+                {{#list}}
+                    <li class="list-group-item">
+                        <span>{{name}}</span>
+                        <button data-index="{{@index}}" class="item-remove btn btn-danger btn-sm float-right">X</button>
+                    </li>
+                {{/list}}
+            </ul>
+            <div class="dbl-top-margin">
+                <input placeholder="New Item" type="text" class="form-control item-name" />
+                <button class="dbl-top-margin btn btn-primary col-xs-12 item-add">+</button>
+            </div>
+        </script>
+    </head>
+    <body>
+        <div class="container"></div>
+        <script src="build/bundle_r.js"></script>
+    </body>
+</html>
