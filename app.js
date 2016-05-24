@@ -69,7 +69,11 @@ function runTest(){
 
     result.push(Date.now() - time); //存储数据用于绘制图表，数据放大100倍
     console.log(result);
-    average = Math.floor(eval(result.join("+"))/result.length); //计算整体平均值
+    
+    var sum = 0;
+    result.map(function(val){ sum += val;});
+    average = Math.floor(sum/result.length); //计算平均值
+
     $('.item-result').text(average); //展示运行结果
 }
 

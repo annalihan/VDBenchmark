@@ -7,11 +7,11 @@ var Handlebars = require('handlebars');
 var model = {
     list: [
     {
-        name: 'todo 1'
+        name: 'todo 1',key:1
     }, {
-        name: 'todo 2'
+        name: 'todo 2',key:2
     }, {
-        name: 'todo 3'
+        name: 'todo 3',key:3
     }
     ]
 };
@@ -25,7 +25,7 @@ var liTemplate = ''
     + '</li>';
 
 //编译模版
-// var lisTemplComplied = Handlebars.compile('{{#list}}' + liTemplate + '{{/list}}');
+var lisTemplComplied = Handlebars.compile('{{#list}}' + liTemplate + '{{/list}}');
 var liTemplComplied = Handlebars.compile(liTemplate);
 var mainTemplComplied = Handlebars.compile(mainTemplate);
 
@@ -49,21 +49,31 @@ $container.delegate('.item-add', 'click', function () {
         name: name
     }));
 });
-$container.delegate('.item-run', 'click', function () {
-    model = $.extend(true, {}, model);
-    model.list=[];
-    runTest(100);
+$container.delegate('.item-run-add', 'click', function () {
+    /*model = $.extend(true, {}, model);
+    model.list=[];*/
+    runAdd(100);
+});
+$container.delegate('.item-run-sort', 'click', function () {
+    runSort();
+});
+$container.delegate('.item-run-shift', 'click', function () {
+    runShift(100);
 });
 
 //测试方法
 var result=[], average=0;
 var start;
 var deltTime = 0;
-function runTest(count) {
+function runAdd(count) {
 
     if (!count) {
         result.push(deltTime);
-        average = Math.floor(eval(result.join("+"))/result.length); //计算平均值
+
+        var sum = 0;
+        result.map(function(val){ sum += val;});
+        average = Math.floor(sum/result.length); //计算平均值
+
         $('.item-result').text(average);  //展示运行结果
         deltTime = 0;
         console.log("finished!",result);
@@ -71,22 +81,83 @@ function runTest(count) {
     }
 
     model = $.extend(true, {}, model);
-    var name = 'todo:' + Math.floor(Math.random() * (1000));
-    model.list.push({
-        name: name
-    });
+    var key =  Math.floor(Math.random() * (1000));
+    var item = {
+        name: 'todo:' +key,
+        key: key
+    };
+    model.list.push(item);
 
     start = Date.now();
-    if(deltTime===0){
+    /*if(deltTime===0){
         $ul[0].innerHTML='';
-    }
-    render(name);
+    }*/
+    render(item);
     deltTime += Date.now() - start;
 
     count--;
-    requestAnimationFrame(runTest.bind(this, count));
+    requestAnimationFrame(runAdd.bind(this, count));
 };
 
-function render(name){
-    $ul.append(liTemplComplied({name:name}));
+//测试随机替换数据
+var resultShift=[], average=0,key,indexA,indexB;
+var deltShift = 0;
+function runShift(count) {
+    if (!count) {
+        resultShift.push(deltShift);
+        
+        var sum = 0;
+        resultShift.map(function(val){ sum += val;});
+        average = Math.floor(sum/resultShift.length); //计算平均值
+
+        $('.item-result').text(average);  //展示运行结果
+        deltShift = 0;
+        console.log("finished!",resultShift);
+        return;
+    }
+
+    model = $.extend(true, {}, model);
+    key =Math.floor(Math.random() * (1000));
+    indexA =Math.floor(Math.random() * (model.list.length-1));
+    indexB =Math.floor(Math.random() * (model.list.length-1));
+    var item = {
+        name:  'todo' + key,
+        key: key
+    };
+    model.list.splice(indexA,1);
+
+    model.list.splice(indexB,0,item);
+
+    start = Date.now();
+    renderShift(indexA, indexB, item);
+    deltShift += Date.now() - start;
+
+    count--;
+    requestAnimationFrame(runShift.bind(this, count));
+};
+
+function runSort() {
+    model = $.extend(true, {}, model);
+    /*model.list.sort(function(a,b){
+        return a.key+Math.floor(Math.random() * (1000))-b.key;
+    });*/
+    model.list.reverse();
+
+    start = Date.now();
+    renderSort(model);
+
+    $('.item-result').text(Date.now() - start);  //展示运行结果
+
+};
+
+function render(item){
+    $ul.append(liTemplComplied(item));
+}
+function renderShift(indexA,indexB,item){
+    $ul.children()[indexA].remove();
+    var node = $ul.children()[indexB];
+    $(node).after(liTemplComplied(item));
+}
+function renderSort(model){
+    $ul.html(lisTemplComplied(model));
 }

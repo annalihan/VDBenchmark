@@ -7,11 +7,11 @@ var createElement = require('virtual-dom/create-element');
 var model = {
     list: [
         {
-            name: 'list 1'
+            name: 'todo 1',key:1
         }, {
-            name: 'list 2'
+            name: 'todo 2',key:2
         }, {
-            name: 'list 3'
+            name: 'todo 3',key:3
         }
     ]
 };
@@ -21,7 +21,9 @@ var $container = $('.container');
 var hyperItems = {};
 
 var hyperHeader = h('div.dbl-top-margin', [
-        h('button.dbl-top-margin.btn.btn-primary.col-xs-12.item-run', 'Run Test'),
+        h('button.dbl-top-margin.btn.btn-primary.col-xs-4.item-run-add', 'Run Add Test'),
+        h('button.dbl-top-margin.btn.btn-primary.col-xs-4.item-run-sort', 'Run Sort Test'),
+        h('button.dbl-top-margin.btn.btn-primary.col-xs-4.item-run-shift', 'Run Shift Test'),
         h('p',[
             h('span','test result(unit ms): '),
             h('span.item-result', '')
@@ -67,24 +69,36 @@ function render(model) {
     root = patch(root, patches)
     tree = newTree;
 }
+function renderSort(model) {
+    var newTree = generateTree(model);
+    var patches = diff(tree, newTree);
+    root = patch(root, patches)
+    tree = newTree;
+}
 
+//测试添加数据
 var result=[], average=0;
 var start;
 var deltTime = 0;
-function runTest(count) {
+function runAdd(count) {
     if (!count) {
         result.push(deltTime);
-        average = Math.floor(eval(result.join("+"))/result.length); //计算平均值
+        
+        var sum = 0;
+        result.map(function(val){ sum += val;});
+        average = Math.floor(sum/result.length); //计算平均值
+
         $('.item-result').text(average);  //展示运行结果
         deltTime = 0;
-        console.log("finished!",result);
+        // console.log("finished!",result);
         return;
     }
 
     model = $.extend(true, {}, model);
-    var name = 'todo:' + Math.floor(Math.random() * (1000));
+    var key =Math.floor(Math.random() * (1000));
     model.list.push({
-        name: name
+        name:  'todo' + key,
+        key: key
     });
 
     start = Date.now();
@@ -92,7 +106,56 @@ function runTest(count) {
     deltTime += Date.now() - start;
 
     count--;
-    requestAnimationFrame(runTest.bind(this, count));
+    requestAnimationFrame(runAdd.bind(this, count));
+};
+
+//测试随机移动数据
+var resultShift=[], average=0,key,indexA,indexB;
+var deltShift = 0;
+function runShift(count) {
+    if (!count) {
+        resultShift.push(deltShift);
+        
+        var sum = 0;
+        resultShift.map(function(val){ sum += val;});
+        average = Math.floor(sum/resultShift.length); //计算平均值
+
+        $('.item-result').text(average);  //展示运行结果
+        deltShift = 0;
+        console.log("finished!",resultShift);
+        return;
+    }
+
+    model = $.extend(true, {}, model);
+    key =Math.floor(Math.random() * (1000));
+    indexA =Math.floor(Math.random() * (model.list.length-1));
+    indexB =Math.floor(Math.random() * (model.list.length-1));
+    model.list.splice(indexA,1);
+    model.list.splice(indexB,0,{
+        name:  'todo' + key,
+        key: key
+    });
+
+    start = Date.now();
+    render(model);
+    deltShift += Date.now() - start;
+
+    count--;
+    requestAnimationFrame(runShift.bind(this, count));
+};
+
+//测试排序
+function runSort() {
+    model = $.extend(true, {}, model);
+    /*model.list.sort(function(a,b){
+        return a.key+Math.floor(Math.random() * (1000))-b.key;
+    });*/
+    model.list.reverse();
+
+    start = Date.now();
+    renderSort(model);
+    $('.item-result').text(Date.now() - start);  //展示运行结果
+
 };
 
 
@@ -116,10 +179,16 @@ $container.delegate('.item-add', 'click', function () {
     render(model);
 });
 
-$container.delegate('.item-run', 'click', function () {
-    model = $.extend(true, {}, model);
-    model.list=[];
-    runTest(100, model);
+$container.delegate('.item-run-add', 'click', function () {
+    // model = $.extend(true, {}, model);
+    // model.list=[];
+    runAdd(100);
+});
+$container.delegate('.item-run-sort', 'click', function () {
+    runSort();
+});
+$container.delegate('.item-run-shift', 'click', function () {
+    runShift(100);
 });
 
 //初始化渲染
