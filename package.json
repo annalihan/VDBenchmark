@@ -8,7 +8,7 @@
   },
   "devDependencies": {},
   "scripts":{
-  	"build" : "browserify app.js -o build/bundle.js && browserify app_vd.js -o build/bundle_vd.js",
-    "build_r" : "browserify app_r.js -o build/bundle_r.js && browserify app_vd_r.js -o build/bundle_vd_r.js"
+    "build" : "browserify raw2.js -o build/bundle.js && browserify vd2.js -o build/bundle_vd.js",
+  	"build_r" : "browserify raw_r.js -o build/bundle_r.js && browserify vd_r.js -o build/bundle_vd_r.js"
   }
 }

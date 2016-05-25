@@ -1,86 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var $ = require('jquery');
-var Handlebars = require('handlebars');
-
-// 数据
-var model = {
-    list: [
-    /*{
-        name: 'list 1'
-    }, {
-        name: 'list 2'
-    }, {
-        name: 'list 3'
-    }*/
-    ]
-};
-
-//定义模版
-var mainTemplate = $('.template').text(); //从html中获取
-var liTemplate = ''
-    + '<li class="list-group-item">'
-        + '<span>{{name}}</span>'
-        + '<button class="item-remove btn btn-danger btn-sm float-right">X</button>'
-    + '</li>';
-
-//编译模版
-var lisTemplComplied = Handlebars.compile('{{#list}}' + liTemplate + '{{/list}}');
-var liTemplComplied = Handlebars.compile(liTemplate);
-var mainTemplComplied = Handlebars.compile(mainTemplate);
-
-//初始化渲染页面
-$('.container').html(mainTemplComplied((model)));
-
-//代理事件区
-var $container = $('.container');
-var $ul = $container.find('ul');
-var $itemName = $container.find('.item-name');
-$container.delegate('.item-remove', 'click', function (e) {
-    var $li = $(e.target).parents('li');
-    $li.remove();
-});
-$container.delegate('.item-add', 'click', function () {
-    var name = $itemName.val();
-    // 清空输入框
-    $itemName.val('');
-    // 渲染新项目并插入
-    $ul.append(Handlebars.compile(liTemplate)({
-        name: name
-    }));
-});
-$container.delegate('.item-run', 'click', function () {
-    runTest();
-});
-
-//测试方法
-var result=[], average=0;
-function runTest(){
-    var time = Date.now();
-    $ul[0].innerHTML = '';
-    model.list=[];
-    var count = 100;
-    for (var i = 0; i < count; i++) {
-        var name = 'item-' + Math.floor(Math.random() * (1000));
-        model = $.extend(true, {}, model); //数据不可变性
-        model.list.push({
-            name: name
-        });
-        render(name);
-    }
-
-    result.push(Date.now() - time); //存储数据用于绘制图表，数据放大100倍
-    console.log(result);
-    average = Math.floor(eval(result.join("+"))/result.length); //计算整体平均值
-    $('.item-result').text(average); //展示运行结果
-}
-
-function render(name){
-    $ul.append(liTemplComplied({
-        name: name
-    }));
-    // $ul.html(lisTemplComplied(model));
-}
-},{"handlebars":34,"jquery":46}],2:[function(require,module,exports){
 (function (process,__filename){
 /** vim: et:ts=4:sw=4:sts=4
  * @license amdefine 1.0.0 Copyright (c) 2011-2015, The Dojo Foundation All Rights Reserved.
@@ -385,9 +303,9 @@ function amdefine(module, requireFn) {
 module.exports = amdefine;
 
 }).call(this,require('_process'),"/node_modules/amdefine/amdefine.js")
-},{"_process":4,"path":47}],3:[function(require,module,exports){
+},{"_process":3,"path":46}],2:[function(require,module,exports){
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -483,7 +401,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -550,7 +468,7 @@ exports['default'] = inst;
 module.exports = exports['default'];
 
 
-},{"./handlebars.runtime":6,"./handlebars/compiler/ast":8,"./handlebars/compiler/base":9,"./handlebars/compiler/compiler":11,"./handlebars/compiler/javascript-compiler":13,"./handlebars/compiler/visitor":16,"./handlebars/no-conflict":30}],6:[function(require,module,exports){
+},{"./handlebars.runtime":5,"./handlebars/compiler/ast":7,"./handlebars/compiler/base":8,"./handlebars/compiler/compiler":10,"./handlebars/compiler/javascript-compiler":12,"./handlebars/compiler/visitor":15,"./handlebars/no-conflict":29}],5:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -618,7 +536,7 @@ exports['default'] = inst;
 module.exports = exports['default'];
 
 
-},{"./handlebars/base":7,"./handlebars/exception":20,"./handlebars/no-conflict":30,"./handlebars/runtime":31,"./handlebars/safe-string":32,"./handlebars/utils":33}],7:[function(require,module,exports){
+},{"./handlebars/base":6,"./handlebars/exception":19,"./handlebars/no-conflict":29,"./handlebars/runtime":30,"./handlebars/safe-string":31,"./handlebars/utils":32}],6:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -724,7 +642,7 @@ exports.createFrame = _utils.createFrame;
 exports.logger = _logger2['default'];
 
 
-},{"./decorators":18,"./exception":20,"./helpers":21,"./logger":29,"./utils":33}],8:[function(require,module,exports){
+},{"./decorators":17,"./exception":19,"./helpers":20,"./logger":28,"./utils":32}],7:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -757,7 +675,7 @@ exports['default'] = AST;
 module.exports = exports['default'];
 
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -807,7 +725,7 @@ function parse(input, options) {
 }
 
 
-},{"../utils":33,"./helpers":12,"./parser":14,"./whitespace-control":17}],10:[function(require,module,exports){
+},{"../utils":32,"./helpers":11,"./parser":13,"./whitespace-control":16}],9:[function(require,module,exports){
 /* global define */
 'use strict';
 
@@ -975,7 +893,7 @@ exports['default'] = CodeGen;
 module.exports = exports['default'];
 
 
-},{"../utils":33,"source-map":35}],11:[function(require,module,exports){
+},{"../utils":32,"source-map":34}],10:[function(require,module,exports){
 /* eslint-disable new-cap */
 
 'use strict';
@@ -1549,7 +1467,7 @@ function transformLiteralToPath(sexpr) {
 }
 
 
-},{"../exception":20,"../utils":33,"./ast":8}],12:[function(require,module,exports){
+},{"../exception":19,"../utils":32,"./ast":7}],11:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1781,7 +1699,7 @@ function preparePartialBlock(open, program, close, locInfo) {
 }
 
 
-},{"../exception":20}],13:[function(require,module,exports){
+},{"../exception":19}],12:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2909,7 +2827,7 @@ exports['default'] = JavaScriptCompiler;
 module.exports = exports['default'];
 
 
-},{"../base":7,"../exception":20,"../utils":33,"./code-gen":10}],14:[function(require,module,exports){
+},{"../base":6,"../exception":19,"../utils":32,"./code-gen":9}],13:[function(require,module,exports){
 /* istanbul ignore next */
 /* Jison generated parser */
 "use strict";
@@ -3649,7 +3567,7 @@ var handlebars = (function () {
 exports['default'] = handlebars;
 
 
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /* eslint-disable new-cap */
 'use strict';
 
@@ -3837,7 +3755,7 @@ PrintVisitor.prototype.HashPair = function (pair) {
 /* eslint-enable new-cap */
 
 
-},{"./visitor":16}],16:[function(require,module,exports){
+},{"./visitor":15}],15:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3979,7 +3897,7 @@ exports['default'] = Visitor;
 module.exports = exports['default'];
 
 
-},{"../exception":20}],17:[function(require,module,exports){
+},{"../exception":19}],16:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4202,7 +4120,7 @@ exports['default'] = WhitespaceControl;
 module.exports = exports['default'];
 
 
-},{"./visitor":16}],18:[function(require,module,exports){
+},{"./visitor":15}],17:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4220,7 +4138,7 @@ function registerDefaultDecorators(instance) {
 }
 
 
-},{"./decorators/inline":19}],19:[function(require,module,exports){
+},{"./decorators/inline":18}],18:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4251,7 +4169,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":33}],20:[function(require,module,exports){
+},{"../utils":32}],19:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4293,7 +4211,7 @@ exports['default'] = Exception;
 module.exports = exports['default'];
 
 
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4341,7 +4259,7 @@ function registerDefaultHelpers(instance) {
 }
 
 
-},{"./helpers/block-helper-missing":22,"./helpers/each":23,"./helpers/helper-missing":24,"./helpers/if":25,"./helpers/log":26,"./helpers/lookup":27,"./helpers/with":28}],22:[function(require,module,exports){
+},{"./helpers/block-helper-missing":21,"./helpers/each":22,"./helpers/helper-missing":23,"./helpers/if":24,"./helpers/log":25,"./helpers/lookup":26,"./helpers/with":27}],21:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4382,7 +4300,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":33}],23:[function(require,module,exports){
+},{"../utils":32}],22:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4478,7 +4396,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../exception":20,"../utils":33}],24:[function(require,module,exports){
+},{"../exception":19,"../utils":32}],23:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4505,7 +4423,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../exception":20}],25:[function(require,module,exports){
+},{"../exception":19}],24:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4536,7 +4454,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":33}],26:[function(require,module,exports){
+},{"../utils":32}],25:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4564,7 +4482,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4578,7 +4496,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4613,7 +4531,7 @@ exports['default'] = function (instance) {
 module.exports = exports['default'];
 
 
-},{"../utils":33}],29:[function(require,module,exports){
+},{"../utils":32}],28:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4662,7 +4580,7 @@ exports['default'] = logger;
 module.exports = exports['default'];
 
 
-},{"./utils":33}],30:[function(require,module,exports){
+},{"./utils":32}],29:[function(require,module,exports){
 (function (global){
 /* global window */
 'use strict';
@@ -4686,7 +4604,7 @@ module.exports = exports['default'];
 
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],31:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4980,7 +4898,7 @@ function executeDecorators(fn, prog, container, depths, data, blockParams) {
 }
 
 
-},{"./base":7,"./exception":20,"./utils":33}],32:[function(require,module,exports){
+},{"./base":6,"./exception":19,"./utils":32}],31:[function(require,module,exports){
 // Build out our basic SafeString type
 'use strict';
 
@@ -4997,7 +4915,7 @@ exports['default'] = SafeString;
 module.exports = exports['default'];
 
 
-},{}],33:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -5123,7 +5041,7 @@ function appendContextPath(contextPath, id) {
 }
 
 
-},{}],34:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 // USAGE:
 // var handlebars = require('handlebars');
 /* eslint-disable no-var */
@@ -5150,7 +5068,7 @@ if (typeof require !== 'undefined' && require.extensions) {
   require.extensions['.hbs'] = extension;
 }
 
-},{"../dist/cjs/handlebars":5,"../dist/cjs/handlebars/compiler/printer":15,"fs":3}],35:[function(require,module,exports){
+},{"../dist/cjs/handlebars":4,"../dist/cjs/handlebars/compiler/printer":14,"fs":2}],34:[function(require,module,exports){
 /*
  * Copyright 2009-2011 Mozilla Foundation and contributors
  * Licensed under the New BSD license. See LICENSE.txt or:
@@ -5160,7 +5078,7 @@ exports.SourceMapGenerator = require('./source-map/source-map-generator').Source
 exports.SourceMapConsumer = require('./source-map/source-map-consumer').SourceMapConsumer;
 exports.SourceNode = require('./source-map/source-node').SourceNode;
 
-},{"./source-map/source-map-consumer":42,"./source-map/source-map-generator":43,"./source-map/source-node":44}],36:[function(require,module,exports){
+},{"./source-map/source-map-consumer":41,"./source-map/source-map-generator":42,"./source-map/source-node":43}],35:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -5269,7 +5187,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./util":45,"amdefine":2}],37:[function(require,module,exports){
+},{"./util":44,"amdefine":1}],36:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -5417,7 +5335,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./base64":38,"amdefine":2}],38:[function(require,module,exports){
+},{"./base64":37,"amdefine":1}],37:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -5492,7 +5410,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"amdefine":2}],39:[function(require,module,exports){
+},{"amdefine":1}],38:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -5611,7 +5529,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"amdefine":2}],40:[function(require,module,exports){
+},{"amdefine":1}],39:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2014 Mozilla Foundation and contributors
@@ -5699,7 +5617,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./util":45,"amdefine":2}],41:[function(require,module,exports){
+},{"./util":44,"amdefine":1}],40:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -5821,7 +5739,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"amdefine":2}],42:[function(require,module,exports){
+},{"amdefine":1}],41:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -6900,7 +6818,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./array-set":36,"./base64-vlq":37,"./binary-search":39,"./quick-sort":41,"./util":45,"amdefine":2}],43:[function(require,module,exports){
+},{"./array-set":35,"./base64-vlq":36,"./binary-search":38,"./quick-sort":40,"./util":44,"amdefine":1}],42:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -7301,7 +7219,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./array-set":36,"./base64-vlq":37,"./mapping-list":40,"./util":45,"amdefine":2}],44:[function(require,module,exports){
+},{"./array-set":35,"./base64-vlq":36,"./mapping-list":39,"./util":44,"amdefine":1}],43:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -7717,7 +7635,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"./source-map-generator":43,"./util":45,"amdefine":2}],45:[function(require,module,exports){
+},{"./source-map-generator":42,"./util":44,"amdefine":1}],44:[function(require,module,exports){
 /* -*- Mode: js; js-indent-level: 2; -*- */
 /*
  * Copyright 2011 Mozilla Foundation and contributors
@@ -8089,7 +8007,7 @@ define(function (require, exports, module) {
 
 });
 
-},{"amdefine":2}],46:[function(require,module,exports){
+},{"amdefine":1}],45:[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v2.2.4
  * http://jquery.com/
@@ -17905,7 +17823,7 @@ if ( !noGlobal ) {
 return jQuery;
 }));
 
-},{}],47:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -18133,4 +18051,168 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":4}]},{},[1]);
+},{"_process":3}],47:[function(require,module,exports){
+var $ = require('jquery');
+var Handlebars = require('handlebars');
+
+// template = ['<div>', template, '</div>'].join('');
+
+// 数据
+var model = {
+    list: [
+    {
+        name: 'todo 1',key:1
+    }, {
+        name: 'todo 2',key:2
+    }, {
+        name: 'todo 3',key:3
+    }
+    ]
+};
+
+//定义模版
+var mainTemplate = $('.template').text(); //从html中获取
+var liTemplate = ''
+    + '<li class="list-group-item">'
+        + '<span>{{name}}</span>'
+        + '<button class="item-remove btn btn-danger btn-sm float-right">X</button>'
+    + '</li>';
+
+//编译模版
+var lisTemplComplied = Handlebars.compile('{{#list}}' + liTemplate + '{{/list}}');
+var liTemplComplied = Handlebars.compile(liTemplate);
+var mainTemplComplied = Handlebars.compile(mainTemplate);
+
+//初始化渲染页面
+$('.container').html(mainTemplComplied((model)));
+
+//代理事件区
+var $container = $('.container');
+var $ul = $container.find('ul');
+var $itemName = $container.find('.item-name');
+$container.delegate('.item-remove', 'click', function (e) {
+    var $li = $(e.target).parents('li');
+    $li.remove();
+});
+$container.delegate('.item-add', 'click', function () {
+    var name = $itemName.val();
+    // 清空输入框
+    $itemName.val('');
+    // 渲染新项目并插入
+    $ul.append(Handlebars.compile(liTemplate)({
+        name: name
+    }));
+});
+$container.delegate('.item-run-add', 'click', function () {
+    /*model = $.extend(true, {}, model);
+    model.list=[];*/
+    runAdd(100);
+});
+$container.delegate('.item-run-sort', 'click', function () {
+    runSort();
+});
+$container.delegate('.item-run-shift', 'click', function () {
+    runShift(100);
+});
+
+//测试方法
+var result=[], average=0;
+var start;
+var deltTime = 0;
+function runAdd(count) {
+
+    if (!count) {
+        result.push(deltTime);
+
+        var sum = 0;
+        result.map(function(val){ sum += val;});
+        average = Math.floor(sum/result.length); //计算平均值
+
+        $('.item-result').text(average);  //展示运行结果
+        deltTime = 0;
+        console.log("finished!",result);
+        return;
+    }
+
+    model = $.extend(true, {}, model);
+    var key =  Math.floor(Math.random() * (1000));
+    var item = {
+        name: 'todo:' +key,
+        key: key
+    };
+    model.list.push(item);
+
+    start = Date.now();
+    /*if(deltTime===0){
+        $ul[0].innerHTML='';
+    }*/
+    render(item);
+    deltTime += Date.now() - start;
+
+    count--;
+    requestAnimationFrame(runAdd.bind(this, count));
+};
+
+//测试随机替换数据
+var resultShift=[], average=0,key,indexA,indexB;
+var deltShift = 0;
+function runShift(count) {
+    if (!count) {
+        resultShift.push(deltShift);
+        
+        var sum = 0;
+        resultShift.map(function(val){ sum += val;});
+        average = Math.floor(sum/resultShift.length); //计算平均值
+
+        $('.item-result').text(average);  //展示运行结果
+        deltShift = 0;
+        console.log("finished!",resultShift);
+        return;
+    }
+
+    model = $.extend(true, {}, model);
+    key =Math.floor(Math.random() * (1000));
+    indexA =Math.floor(Math.random() * (model.list.length-1));
+    indexB =Math.floor(Math.random() * (model.list.length-1));
+    var item = {
+        name:  'todo' + key,
+        key: key
+    };
+    model.list.splice(indexA,1);
+
+    model.list.splice(indexB,0,item);
+
+    start = Date.now();
+    renderShift(indexA, indexB, item);
+    deltShift += Date.now() - start;
+
+    count--;
+    requestAnimationFrame(runShift.bind(this, count));
+};
+
+function runSort() {
+    model = $.extend(true, {}, model);
+    /*model.list.sort(function(a,b){
+        return a.key+Math.floor(Math.random() * (1000))-b.key;
+    });*/
+    model.list.reverse();
+
+    start = Date.now();
+    renderSort(model);
+
+    $('.item-result').text(Date.now() - start);  //展示运行结果
+
+};
+
+function render(item){
+    $ul.append(liTemplComplied(item));
+}
+function renderShift(indexA,indexB,item){
+    $ul.children()[indexA].remove();
+    var node = $ul.children()[indexB];
+    $(node).after(liTemplComplied(item));
+}
+function renderSort(model){
+    $ul.html(lisTemplComplied(model));
+}
+},{"handlebars":33,"jquery":45}]},{},[47]);
