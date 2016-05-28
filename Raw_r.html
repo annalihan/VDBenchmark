@@ -10,10 +10,39 @@
             .float-right {
                 float: right;
             }
+            /*.li_todo{
+                background-color: #F7005E;
+            }
+            .li_doing{
+                background-color: #31AA38;
+            }
+            .li_done{
+                background-color: #666666;
+            }*/
+            .icon_todo,.icon_doing,.icon_done{
+                display: inline-block;
+                background:url();
+                width:20px;
+                height:20px;
+            }
+            .icon_todo{
+                background: url(img/todo.png);
+                background-size: contain;
+            }
+            .icon_doing{
+                background: url(img/doing.png);
+                background-size: contain;
+            }
+            .icon_done{
+                background: url(img/done.png);
+                background-size: contain;
+            }
         </style>
         <script class="template" type="text/template">
             <div class="dbl-top-margin">
-                <button class="dbl-top-margin btn btn-primary col-xs-12 item-run">Run Test</button>
+                <button class="dbl-top-margin btn btn-primary col-xs-4 item-run-add">Run Add</button>
+                <button class="dbl-top-margin btn btn-primary col-xs-4 item-run-shift">Run Shift</button>
+                <button class="dbl-top-margin btn btn-primary col-xs-4 item-run-sort">Run Sort</button>
                 <p>
                     <span>test result(unit ms): </span>
                     <span class="item-result"></span>
@@ -21,10 +50,31 @@
             </div>
             <ul class="list-group dbl-top-margin">
                 {{#list}}
-                    <li class="list-group-item">
-                        <span>{{name}}</span>
-                        <button data-index="{{@index}}" class="item-remove btn btn-danger btn-sm float-right">X</button>
-                    </li>
+                    {{#if doing}}
+                        <li class="list-group-item li_doing">
+                            <i class="icon_doing"></i>
+                            <img src='img/pic2.png' alt="" width="60" height="60">
+                            <span>{{name}}</span>
+                            <button data-index="{{@index}}" class="item-remove btn btn-danger btn-sm float-right">X</button>
+                            <span class="float-right">{{time}}</span>
+                        </li>
+                    {{else if done}}
+                        <li class="list-group-item li_done">
+                            <i class="icon_done"></i>
+                            <img src='img/pic1.png' alt="" width="60" height="60">
+                            <span>{{name}}</span>
+                            <button data-index="{{@index}}" class="item-remove btn btn-danger btn-sm float-right">X</button>
+                            <span class="float-right">{{time}}</span>
+                        </li>
+                    {{else}}
+                        <li class="list-group-item li_todo">
+                            <i class="icon_todo"></i>
+                            <img src='img/pic3.png' alt="" width="60" height="60">
+                            <span>{{name}}</span>
+                            <button data-index="{{@index}}" class="item-remove btn btn-danger btn-sm float-right">X</button>
+                            <span class="float-right">{{time}}</span>
+                        </li>
+                    {{/if}}
                 {{/list}}
             </ul>
             <div class="dbl-top-margin">

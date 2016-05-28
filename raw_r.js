@@ -7,11 +7,11 @@ var Handlebars = require('handlebars');
 var model = {
     list: [
     {
-        name: 'todo 1',key:1
+        name: 'todo 1',key:1, todo:true, time:'2016-05-01'
     }, {
-        name: 'todo 2',key:2
+        name: 'todo 2',key:2, doing:true, time:'2016-05-15'
     }, {
-        name: 'todo 3',key:3
+        name: 'todo 3',key:3, done:true, time:'2016-05-28'
     }
     ]
 };
@@ -20,8 +20,15 @@ var model = {
 var mainTemplate = $('.template').text(); //从html中获取
 var liTemplate = ''
     + '<li class="list-group-item">'
+        + '{{#if doing}}<i class="icon_doing"></i>'
+        + '{{else if todo}}<i class="icon_todo"></i>'
+        + '{{else}}<i class="icon_done"></i>{{/if}}'
+        + '{{#if doing}}<img src="img/pic2.png" alt="" width="60" height="60">'
+        + '{{else if todo}}<img src="img/pic3.png" alt="" width="60" height="60">'
+        + '{{else}}<img src="img/pic1.png" alt="" width="60" height="60">{{/if}}'
         + '<span>{{name}}</span>'
         + '<button class="item-remove btn btn-danger btn-sm float-right">X</button>'
+        + '<span class="float-right">{{time}}</span>'
     + '</li>';
 
 //编译模版
@@ -62,6 +69,23 @@ $container.delegate('.item-run-shift', 'click', function () {
 });
 
 //测试方法
+function genData(){
+    var key =  Math.floor(Math.random() * (1000));
+    var item = {
+        name: 'todo:' +key,
+        key: key,
+        time: '2016-5-28'
+    };
+    var status = model.list.length%3;
+    if(status==0){
+        item.todo = true;
+    }else if(status==1){
+        item.doing = true;
+    }else {
+        item.done = true;
+    }
+    return item;
+}
 var result=[], average=0;
 var start;
 var deltTime = 0;
@@ -79,13 +103,8 @@ function runAdd(count) {
         console.log("finished!",result);
         return;
     }
-
+    var item = genData();
     model = $.extend(true, {}, model);
-    var key =  Math.floor(Math.random() * (1000));
-    var item = {
-        name: 'todo:' +key,
-        key: key
-    };
     model.list.push(item);
 
     start = Date.now();
@@ -105,7 +124,7 @@ var deltShift = 0;
 function runShift(count) {
     if (!count) {
         resultShift.push(deltShift);
-        
+
         var sum = 0;
         resultShift.map(function(val){ sum += val;});
         average = Math.floor(sum/resultShift.length); //计算平均值
@@ -117,19 +136,17 @@ function runShift(count) {
     }
 
     model = $.extend(true, {}, model);
-    key =Math.floor(Math.random() * (1000));
+
     indexA =Math.floor(Math.random() * (model.list.length-1));
     indexB =Math.floor(Math.random() * (model.list.length-1));
-    var item = {
-        name:  'todo' + key,
-        key: key
-    };
+    
     model.list.splice(indexA,1);
-
+    var item = genData();
     model.list.splice(indexB,0,item);
 
     start = Date.now();
     renderShift(indexA, indexB, item);
+    // renderShift2(model);
     deltShift += Date.now() - start;
 
     count--;
@@ -153,11 +170,19 @@ function runSort() {
 function render(item){
     $ul.append(liTemplComplied(item));
 }
+
 function renderShift(indexA,indexB,item){
+    // 删除
     $ul.children()[indexA].remove();
+    // 插入
     var node = $ul.children()[indexB];
     $(node).after(liTemplComplied(item));
 }
+
+function renderShift2(model){
+    $ul[0].innerHTML = (lisTemplComplied(model));
+}
+
 function renderSort(model){
     $ul.html(lisTemplComplied(model));
 }

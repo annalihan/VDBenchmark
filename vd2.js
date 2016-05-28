@@ -22,8 +22,8 @@ var hyperItems = {};
 
 var hyperHeader = h('div.dbl-top-margin', [
         h('button.dbl-top-margin.btn.btn-primary.col-xs-4.item-run-add', 'Run Add Test'),
-        h('button.dbl-top-margin.btn.btn-primary.col-xs-4.item-run-sort', 'Run Sort Test'),
         h('button.dbl-top-margin.btn.btn-primary.col-xs-4.item-run-shift', 'Run Shift Test'),
+        h('button.dbl-top-margin.btn.btn-primary.col-xs-4.item-run-sort', 'Run Sort Test'),
         h('p',[
             h('span','test result(unit ms): '),
             h('span.item-result', '')
@@ -41,6 +41,10 @@ var hyperFooter = h('div.dbl-top-margin', [
 
 function generateTree(model) {
     return h('div', [
+        /*h('ul.list', [
+            h('li.item', ['1']),
+            h('li.item', ['2']),
+        ]),*/
         hyperHeader,
         h('ul.list-group.dbl-top-margin', model.list.map(function (item, index) {
             hyperItems[item.name] = hyperItems[item.name] || h('li.list-group-item', [
@@ -90,7 +94,7 @@ function runAdd(count) {
 
         $('.item-result').text(average);  //展示运行结果
         deltTime = 0;
-        // console.log("finished!",result);
+        console.log("finished!",result);
         return;
     }
 

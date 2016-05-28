@@ -154,14 +154,19 @@ function runSort() {
 function render(item){
     $ul.append(liTemplComplied(item));
 }
+
 function renderShift(indexA,indexB,item){
+    // 删除
     $ul.children()[indexA].remove();
+    // 插入
     var node = $ul.children()[indexB];
     $(node).after(liTemplComplied(item));
 }
+
 function renderShift2(model){
-    $ul.html(lisTemplComplied(model));
+    $ul[0].innerHTML = (lisTemplComplied(model));
 }
+
 function renderSort(model){
     $ul.html(lisTemplComplied(model));
 }
