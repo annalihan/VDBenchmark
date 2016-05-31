@@ -119,7 +119,7 @@ function runAdd(count) {
 };
 
 //测试随机替换数据
-var resultShift=[], average=0,key,indexA,indexB;
+var resultShift=[], average=0,indexA,indexB;
 var deltShift = 0;
 function runShift(count) {
     if (!count) {
@@ -139,14 +139,14 @@ function runShift(count) {
 
     indexA =Math.floor(Math.random() * (model.list.length-1));
     indexB =Math.floor(Math.random() * (model.list.length-1));
-    
+
     model.list.splice(indexA,1);
     var item = genData();
     model.list.splice(indexB,0,item);
 
     start = Date.now();
-    renderShift(indexA, indexB, item);
-    // renderShift2(model);
+    // renderShift(indexA, indexB, item);
+    renderShift2(model);
     deltShift += Date.now() - start;
 
     count--;

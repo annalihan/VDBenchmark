@@ -7,14 +7,20 @@ var createElement = require('virtual-dom/create-element');
 var model = {
     list: [
         {
-            name: 'todo 1',key:1
+            name: 'todo 1',key:1, type:'todo', time:'2016-05-01'
         }, {
-            name: 'todo 2',key:2
+            name: 'todo 2',key:2, type:'doing', time:'2016-05-15'
         }, {
-            name: 'todo 3',key:3
+            name: 'todo 3',key:3, type:'done', time:'2016-05-28'
         }
     ]
 };
+var pic = {
+    todo  :'img/pic1.png',
+    doing :'img/pic2.png',
+    done  :'img/pic3.png'
+}
+var dataType=['todo','doing','done'];
 
 var $container = $('.container');
 
@@ -22,13 +28,12 @@ var hyperItems = {};
 
 var hyperHeader = h('div.dbl-top-margin', [
         h('button.dbl-top-margin.btn.btn-primary.col-xs-4.item-run-add', 'Run Add Test'),
-        h('button.dbl-top-margin.btn.btn-primary.col-xs-4.item-run-sort', 'Run Sort Test'),
         h('button.dbl-top-margin.btn.btn-primary.col-xs-4.item-run-shift', 'Run Shift Test'),
+        h('button.dbl-top-margin.btn.btn-primary.col-xs-4.item-run-sort', 'Run Sort Test'),
         h('p',[
             h('span','test result(unit ms): '),
             h('span.item-result', '')
         ])
-
     ]);
 
 var hyperFooter = h('div.dbl-top-margin', [
@@ -39,20 +44,41 @@ var hyperFooter = h('div.dbl-top-margin', [
         h('button.dbl-top-margin.btn.btn-primary.col-xs-12.item-add', '+')
     ]);
 
+
 function generateTree(model) {
     return h('div', [
         hyperHeader,
         h('ul.list-group.dbl-top-margin', model.list.map(function (item, index) {
             hyperItems[item.name] = hyperItems[item.name] || h('li.list-group-item', [
-                item.name,
+                h('i',{
+                    class: 'icon_'+item.type
+                }),
+                h('img',{
+                    src     :pic[item.type],
+                    width   :60,
+                    height  :60
+                }),
+                h('span', item.name),
                 h('button.item-remove.btn.btn-danger.btn-sm.float-right', {
                     value: item.name
-                }, 'X')
+                }, 'X'),
+                h('span.float-right',item.time)
             ]);
             return hyperItems[item.name];
         })),
         hyperFooter
     ])
+}
+function genData(){
+    var key =  Math.floor(Math.random() * (1000));
+    var index = model.list.length%3;
+    var item = {
+        name: 'todo:' +key,
+        key: key,
+        type: dataType[index],
+        time: '2016-5-28'
+    };
+    return item;
 }
 
 var root;
@@ -83,7 +109,7 @@ var deltTime = 0;
 function runAdd(count) {
     if (!count) {
         result.push(deltTime);
-        
+
         var sum = 0;
         result.map(function(val){ sum += val;});
         average = Math.floor(sum/result.length); //计算平均值
@@ -95,11 +121,7 @@ function runAdd(count) {
     }
 
     model = $.extend(true, {}, model);
-    var key =Math.floor(Math.random() * (1000));
-    model.list.push({
-        name:  'todo' + key,
-        key: key
-    });
+    model.list.push(genData());
 
     start = Date.now();
     render(model);
@@ -110,12 +132,12 @@ function runAdd(count) {
 };
 
 //测试随机移动数据
-var resultShift=[], average=0,key,indexA,indexB;
+var resultShift=[], average=0,indexA,indexB;
 var deltShift = 0;
 function runShift(count) {
     if (!count) {
         resultShift.push(deltShift);
-        
+
         var sum = 0;
         resultShift.map(function(val){ sum += val;});
         average = Math.floor(sum/resultShift.length); //计算平均值
@@ -127,14 +149,10 @@ function runShift(count) {
     }
 
     model = $.extend(true, {}, model);
-    key =Math.floor(Math.random() * (1000));
     indexA =Math.floor(Math.random() * (model.list.length-1));
     indexB =Math.floor(Math.random() * (model.list.length-1));
-    model.list.splice(indexA,1);
-    model.list.splice(indexB,0,{
-        name:  'todo' + key,
-        key: key
-    });
+    model.list.splice(indexA, 1);
+    model.list.splice(indexB, 0, genData());
 
     start = Date.now();
     render(model);
